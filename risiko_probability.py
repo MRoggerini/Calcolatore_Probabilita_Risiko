@@ -100,16 +100,41 @@ def get_mean(d):
 	for i in d:
 		mean += i*d[i]
 	return mean
+	
+def get_second_moment(d):
+    moment = 0
+    for i in d:
+        moment += (i**2) * d[i]
+    return moment
 
 def add_stat(d):
 	variance = 0
 	mean = get_mean(d)
-	for i in d:
-		variance += (mean-i*d[i])**2
+	moment = get_second_moment(d)
 	d['mean'] = mean
-	d['variance'] = variance
-
-
+	d['variance'] = moment - mean**2
+	
+x = build_table()
+while True:
+    atk = int(input('Inserisci le armate in attacco, -1 per finire: '))
+    if atk == -1:
+        break
+    defe = int(input('Inserisci le armate in difesa, -1 per finire: '))
+    if defe == -1:
+        break
+    this = x[atk][defe]
+    for i in range(atk):
+        if i< 10:
+            print(' ', end='')
+        print(i, end = ': ')
+        for j in range(int(this[i]*100)):
+            print('|', end = '')
+        print('{:.2f}%'.format(this[i]*100))
+    print('media: {:.2f}'.format(this['mean']))
+    print('deviazione std: {:.3f}'.format(this['variance']**(1/2)))
+    
+    
+'''
 from kivy.app import App
 from kivy.uix.slider import Slider
 from kivy.uix.widget import Widget
@@ -137,3 +162,4 @@ class RisikoApp(App):
 
 if __name__ == '__main__':
 	RisikoApp().run()
+'''
